@@ -41,6 +41,7 @@ endif()
 ExternalProject_Add(zstd
     GIT_REPOSITORY https://github.com/facebook/zstd.git
     GIT_TAG v1.5.7
+    GIT_SHALLOW TRUE
     SOURCE_SUBDIR build/cmake
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS

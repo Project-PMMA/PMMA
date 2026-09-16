@@ -26,6 +26,7 @@ include(ExternalProject)
 ExternalProject_Add(glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git
     GIT_TAG 3.4
+    GIT_SHALLOW TRUE
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}

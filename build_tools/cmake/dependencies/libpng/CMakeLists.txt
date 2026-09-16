@@ -32,6 +32,7 @@ endif()
 ExternalProject_Add(libpng
     GIT_REPOSITORY https://github.com/glennrp/libpng.git
     GIT_TAG v1.6.49
+    GIT_SHALLOW TRUE
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}

@@ -26,7 +26,7 @@ include(ExternalProject)
 ExternalProject_Add(harfbuzz
     GIT_REPOSITORY https://github.com/harfbuzz/harfbuzz.git
     GIT_TAG 11.2.1
-
+    GIT_SHALLOW TRUE
     # Meson setup command
     CONFIGURE_COMMAND meson setup <BINARY_DIR> <SOURCE_DIR>
         --prefix=${OUTPUT_DIR}

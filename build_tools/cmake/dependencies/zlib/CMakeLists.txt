@@ -26,6 +26,7 @@ include(ExternalProject)
 ExternalProject_Add(zlib
     GIT_REPOSITORY https://github.com/madler/zlib.git
     GIT_TAG v1.3.1
+    GIT_SHALLOW TRUE
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}

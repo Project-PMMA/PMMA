@@ -34,6 +34,7 @@ endif()
 ExternalProject_Add(freetype
     GIT_REPOSITORY https://gitlab.freedesktop.org/freetype/freetype.git
     GIT_TAG VER-2-13-3
+    GIT_SHALLOW TRUE
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}

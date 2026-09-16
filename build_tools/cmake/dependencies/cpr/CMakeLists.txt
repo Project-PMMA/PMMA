@@ -26,6 +26,7 @@ include(ExternalProject)
 ExternalProject_Add(cpr
     GIT_REPOSITORY https://github.com/libcpr/cpr.git
     GIT_TAG 1.14.2
+    GIT_SHALLOW TRUE
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}
