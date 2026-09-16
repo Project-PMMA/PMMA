@@ -96,11 +96,20 @@ void PMMA::Graphics::Shader::CompileShaderComponent(
 
     std::string GraphicsProfile = PMMA::Graphics::Shader::GetGraphicsProfile();
 
-    std::string command = Shader_C_Location + " -f " + RawFilePath + " -o " +
-                          CompiledFilePath + " --type " + Type + " --platform " +
-                          PlatformName + " -i " + ShaderBuildToolsLocation +
-                          " --varyingdef " + VaryingDefLocation + " --profile " +
-                          GraphicsProfile;
+    std::string command = "\"" + Shader_C_Location + "\"" +
+                          " -f \"" + RawFilePath + "\"" +
+                          " -o \"" + CompiledFilePath + "\"" +
+                          " --type " + Type +
+                          " --platform " + PlatformName +
+                          " -i \"" + ShaderBuildToolsLocation + "\"" +
+                          " --varyingdef \"" + VaryingDefLocation + "\"" +
+                          " --profile " + GraphicsProfile;
+
+#ifdef _WIN32
+    std::string execution_command = "\"" + command + "\"";
+#else
+    std::string execution_command = command;
+#endif
 
     if (!std::filesystem::exists(CompiledFilePath)) {
         std::filesystem::create_directories(
@@ -110,7 +119,7 @@ void PMMA::Graphics::Shader::CompileShaderComponent(
     bool DontRepeatOutput = false;
 
     try {
-        if (system(command.c_str()) != 0) {
+        if (system(execution_command.c_str()) != 0) {
             DontRepeatOutput = true;
 
             if (IsInternalShader) {
@@ -127,12 +136,12 @@ be specific to a single platform or graphics backend. Thank you!");
                 PMMA::Core::LoggingManagerInstance->InternalLogError(
                     49,
                     "Shader compilation failed for '" + RawFilePath +
-                        "' with command: '" + command + "'\n\n" +
+                        "' with command: '" + execution_command + "'\n\n" +
                         "To diagnose this shader compilation issue, please run the \
 command listed above in your system terminal/command prompt directly.");
             }
             throw std::runtime_error("Shader compilation failed for '" +
-                                     RawFilePath + "' with command: '" + command + "'.");
+                                     RawFilePath + "' with command: '" + execution_command + "'.");
         }
     } catch (const std::exception &e) {
         if (!DontRepeatOutput) {
@@ -140,7 +149,7 @@ command listed above in your system terminal/command prompt directly.");
                 49,
                 "Shader compilation failed: '" + std::string(e.what()) + "'.");
             throw std::runtime_error("Shader compilation failed for '" +
-                                     RawFilePath + "' with command: '" + command +
+                                     RawFilePath + "' with command: '" + execution_command +
                                      "'\nError: '" + std::string(e.what()) + "'.");
         }
         exit(49);
