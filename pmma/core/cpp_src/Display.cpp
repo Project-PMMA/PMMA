@@ -489,6 +489,11 @@ displays");
         init.resolution.reset = Vsync ? BGFX_RESET_VSYNC : BGFX_RESET_NONE;
         init.platformData = pd;
 
+        init.debug = BGFX_DEBUG_TEXT | BGFX_DEBUG_STATS;
+
+        // This tells the D3D11/D3D12 backends to enable their native debug layers
+        init.resolution.reset = BGFX_FRAME_DEBUG_CAPTURE | BGFX_RESET_VSYNC;
+
         if (!bgfx::init(init)) {
             PMMA::Core::LoggingManagerInstance->InternalLogError(
                 65,
@@ -747,6 +752,18 @@ You can do this using `Display.create`.");
             "Always ensure that the master display is refreshed last as \
 this controls both frame timing and events. Also, refreshing the master \
 display updates all secondary displays.");
+
+        // 1. Enable debug text during init or frame setup
+        bgfx::setDebug(BGFX_DEBUG_TEXT); //
+
+        // 2. Clear the screen text each frame
+        bgfx::dbgTextClear(); //
+
+        // 3. Grab stats and print to coordinates (X=0, Y=1)
+        const bgfx::Stats *stats = bgfx::getStats(); //
+        bgfx::dbgTextPrintf(0, 1, 0x0f, "Textures: %d", stats->numTextures);
+        bgfx::dbgTextPrintf(0, 2, 0x0f, "Index Buffers:  %d", stats->numIndexBuffers);
+        bgfx::dbgTextPrintf(0, 3, 0x0f, "VRAM Used: %lld MB", stats->gpuMemoryUsed / (1024 * 1024));
 
         bgfx::frame();
 
