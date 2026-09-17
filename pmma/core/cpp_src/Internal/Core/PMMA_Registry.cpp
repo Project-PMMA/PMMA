@@ -9,8 +9,11 @@ std::vector<unsigned char> SecondaryDisplayIDs;
 
 std::string PMMA_Location = "";
 std::string PathSeparator = std::string(1, std::filesystem::path::preferred_separator);
-std::string Current_PMMA_Version = "5.1.0";
-std::string Latest_PMMA_Version = "";
+PMMA::Internal::VersionData Current_PMMA_Version = {
+    "5.1.0",
+    {5, 1, 0},
+    true};
+PMMA::Internal::VersionData Latest_PMMA_Version;
 std::string Locale = "en-US";
 
 std::mutex SeedGeneratorLock;

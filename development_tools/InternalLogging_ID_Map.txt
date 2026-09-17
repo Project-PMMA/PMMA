@@ -23,7 +23,7 @@ Notes:
 14 - PMMA is in a developmental stage
 15 - No audio device found
 16 - Unable to read audio sample
-17 - An update is available to PMMA
+17 - PMMA is up to date
 18 - Display not created yet
 19 - Controller not connected
 20 - Using raw controller data
@@ -83,4 +83,6 @@ Notes:
 74 - Querying GitHub for the latest PMMA version
 75 - Query privacy policy
 76 - Unable to connect to GitHub to query latest version
-77 - A new version of PMMA is available
+77 - A new major version of PMMA is available
+78 - A new minor version of PMMA is available
+79 - A new bug fixed version of PMMA is available

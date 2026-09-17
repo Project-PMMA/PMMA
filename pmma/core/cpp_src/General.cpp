@@ -145,28 +145,14 @@ void PMMA::General::SetF11KeyToToggleFullscreen(bool F11KeyShouldToggleFullScree
 }
 
 std::string PMMA::General::GetCurrent_PMMA_Version() {
-    return PMMA::Core::Registry::Current_PMMA_Version;
+    return PMMA::Core::Registry::Current_PMMA_Version.Version;
 }
 
 std::string PMMA::General::GetLatest_PMMA_Version() {
-    return PMMA::Core::Registry::Latest_PMMA_Version;
+    return PMMA::Core::Registry::Latest_PMMA_Version.Version;
 }
 
-void PMMA::General::SetLatest_PMMA_Version(std::string latest_version) {
-    PMMA::Core::Registry::Latest_PMMA_Version = latest_version;
-}
-
-std::string PadVersionString(std::string item) {
-    unsigned int string_size = item.length();
-    std::string padded_string = "";
-    for (unsigned int i = 0; i < 4 - string_size; i++) {
-        padded_string += "0";
-    }
-    padded_string += item;
-    return padded_string;
-}
-
-bool PMMA::General::IsUpdateAvailable() {
+/*bool PMMA::General::IsUpdateAvailable() {
     std::string padded_current_version;
     std::string split_current_version[3];
     unsigned int split_count = 0;
@@ -211,7 +197,7 @@ by creating a new issue here: 'https://github.com/Project-PMMA/PMMA/issues'.");
     }
 
     return numerical_current_version < numerical_latest_version;
-}
+}*/
 
 double PMMA::General::GetApplicationStartTime() {
     return PMMA::Core::Registry::StartupTime.time_since_epoch().count() / 1000000000.0;

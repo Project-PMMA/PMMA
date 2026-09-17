@@ -38,7 +38,15 @@ void Initialize(std::string location) {
 
     PMMA::Core::LoggingManagerInstance->InternalLogInfo(
         12,
-        "Welcome to Python Multi-Media API (PMMA) version: " + PMMA::Core::Registry::Current_PMMA_Version);
+        "Welcome to Python Multi-Media API (PMMA) version: " + PMMA::Core::Registry::Current_PMMA_Version.Version);
+
+    PMMA::Core::LoggingManagerInstance->InternalLogDebug(
+        22,
+        "Thank you for using a pre-released version of PMMA! Please \
+note that there will likely be issues or missing/broken features as we work \
+towards creating the next version of the API. If you find any bugs or think \
+something could be improved it would be invaluable for you to let us know \
+by creating a new issue here: 'https://github.com/Project-PMMA/PMMA/issues'.");
 
     std::string OperatingSystem = PMMA::General::GetOperatingSystem();
     PMMA::Core::LoggingManagerInstance->InternalLogInfo(
@@ -102,17 +110,17 @@ how PMMA and Python interact.");
     PMMA::Core::ParallelWorkerInstance->Enqueue([]() {
         PMMA::Core::NetworkingManagerInstance->QueryLatest_PMMA_Version();
 
-        if (PMMA::Core::Registry::Latest_PMMA_Version.empty()) {
+        if (PMMA::Core::Registry::Latest_PMMA_Version.Version.empty()) {
             PMMA::Core::LoggingManagerInstance->InternalLogWarn(
                 76,
                 "PMMA was unable to check for the latest version of PMMA on GitHub.");
         } else {
-            if (PMMA::Core::Registry::Latest_PMMA_Version != PMMA::Core::Registry::Current_PMMA_Version) {
+            if (PMMA::Core::Registry::Latest_PMMA_Version.Version != PMMA::Core::Registry::Current_PMMA_Version.Version) {
                 PMMA::Core::LoggingManagerInstance->InternalLogInfo(
                     77,
-                    "A new version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version + ". \
+                    "A new version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
 You are currently using version: " +
-                        PMMA::Core::Registry::Current_PMMA_Version + ".");
+                        PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
             }
         }
     });

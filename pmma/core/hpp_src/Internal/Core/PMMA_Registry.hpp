@@ -1,17 +1,26 @@
 #pragma once
 
 #include <chrono>
+#include <cstdint>
 #include <mutex>
 #include <random>
 #include <string>
 #include <vector>
 
+namespace PMMA::Internal {
+struct VersionData {
+    std::string Version;
+    uint16_t VersionCodes[3]; // major, minor, micro
+    bool PreRelease;
+};
+} // namespace PMMA::Internal
+
 namespace PMMA::Core::Registry {
 extern std::vector<unsigned char> SecondaryDisplayIDs;
 extern std::string PMMA_Location;
 extern std::string PathSeparator;
-extern std::string Current_PMMA_Version;
-extern std::string Latest_PMMA_Version;
+extern PMMA::Internal::VersionData Current_PMMA_Version;
+extern PMMA::Internal::VersionData Latest_PMMA_Version;
 extern std::string Locale;
 
 extern std::mutex SeedGeneratorLock;
