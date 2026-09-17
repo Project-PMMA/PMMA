@@ -15,6 +15,7 @@ PMMA::Internal::VersionData Current_PMMA_Version = {
     true};
 PMMA::Internal::VersionData Latest_PMMA_Version;
 std::string Locale = "en-US";
+std::string UpdateCheckTime;
 
 std::mutex SeedGeneratorLock;
 std::mt19937 RandomSeedGenerator;

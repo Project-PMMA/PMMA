@@ -33,4 +33,5 @@ PMMA::Internal::ParallelWorker *ParallelWorkerInstance = nullptr;
 PMMA::Graphics::Shader *Core2D_ShapeSDF_Program = nullptr;
 
 PMMA::Internal::NetworkingManager *NetworkingManagerInstance = nullptr;
+PMMA::Internal::SavedDataManager *SavedDataManagerInstance = nullptr;
 } // namespace PMMA::Core

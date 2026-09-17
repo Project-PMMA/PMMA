@@ -179,11 +179,11 @@ public:
             if (PreviousIndex == PreviouslyLoggedContent.end()) {
                 PreviouslyLoggedContent.push_back(ID);
                 std::string DateTimeCode = GetDateTimeCode();
-                Log(PMMA::Constants::Logging_Types::INFO, DateTimeCode, Content);
+                Log(PMMA::Constants::Logging_Types::LOG_INFO, DateTimeCode, Content);
             }
         } else {
             std::string DateTimeCode = GetDateTimeCode();
-            Log(PMMA::Constants::Logging_Types::INFO, DateTimeCode, Content);
+            Log(PMMA::Constants::Logging_Types::LOG_INFO, DateTimeCode, Content);
         }
     }
 
@@ -197,11 +197,11 @@ public:
             if (PreviousIndex == PreviouslyLoggedContent.end()) {
                 PreviouslyLoggedContent.push_back(ID);
                 std::string DateTimeCode = GetDateTimeCode();
-                Log(PMMA::Constants::Logging_Types::WARN, DateTimeCode, Content);
+                Log(PMMA::Constants::Logging_Types::LOG_WARN, DateTimeCode, Content);
             }
         } else {
             std::string DateTimeCode = GetDateTimeCode();
-            Log(PMMA::Constants::Logging_Types::WARN, DateTimeCode, Content);
+            Log(PMMA::Constants::Logging_Types::LOG_WARN, DateTimeCode, Content);
         }
     }
 
@@ -215,11 +215,11 @@ public:
             if (PreviousIndex == PreviouslyLoggedContent.end()) {
                 PreviouslyLoggedContent.push_back(ID);
                 std::string DateTimeCode = GetDateTimeCode();
-                Log(PMMA::Constants::Logging_Types::ERROR, DateTimeCode, Content);
+                Log(PMMA::Constants::Logging_Types::LOG_ERROR, DateTimeCode, Content);
             }
         } else {
             std::string DateTimeCode = GetDateTimeCode();
-            Log(PMMA::Constants::Logging_Types::ERROR, DateTimeCode, Content);
+            Log(PMMA::Constants::Logging_Types::LOG_ERROR, DateTimeCode, Content);
         }
     }
 

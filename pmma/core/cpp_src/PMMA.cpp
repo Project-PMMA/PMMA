@@ -8,6 +8,7 @@
 #include "Internal/NetworkingManager.hpp"
 #include "Internal/ParallelWorker.hpp"
 #include "Internal/PowerSavingManager.hpp"
+#include "Internal/SavedDataManager.hpp"
 #include "Internal/TerminalColorChecker.hpp"
 
 #include "PMMA.hpp"
@@ -104,9 +105,57 @@ how PMMA and Python interact.");
         PMMA::Core::Registry::SecondaryDisplayIDs.end(), 1);
 
     PMMA::Core::NetworkingManagerInstance = new PMMA::Internal::NetworkingManager();
+    PMMA::Core::SavedDataManagerInstance = new PMMA::Internal::SavedDataManager();
+
+    // NOTE: DATA LOADING IS IN PARALLEL AS ONLY USED FOR UPDATE CHECKING FOR NOW
 
     PMMA::Core::ParallelWorkerInstance->Enqueue([]() {
-        PMMA::Core::NetworkingManagerInstance->QueryLatest_PMMA_Version();
+        PMMA::Core::SavedDataManagerInstance->Load();
+
+        if (PMMA::Core::SavedDataManagerInstance->ShouldCheckForUpdates()) {
+            PMMA::Core::NetworkingManagerInstance->QueryLatest_PMMA_Version();
+        }
+
+        if (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[0] > PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[0]) {
+            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
+                77,
+                "A new major version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
+You are currently using version: " +
+                    PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
+
+        } else if (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[1] > PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[1]) {
+            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
+                78,
+                "A new minor version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
+You are currently using version: " +
+                    PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
+        } else if (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[2] > PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[2]) {
+            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
+                79,
+                "A new bug fixed version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
+You are currently using version: " +
+                    PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
+        } else {
+            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
+                17,
+                "You are on the latest version of PMMA!");
+        }
+
+        bool UnreleasedVersion = ((PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[0] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[0]) ||
+                                  (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[1] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[1]) ||
+                                  (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[2] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[2]));
+
+        if (UnreleasedVersion) {
+            PMMA::Core::LoggingManagerInstance->InternalLogDebug(
+                22,
+                "Thank you for using a pre-released version of PMMA! Please \
+note that there will likely be issues or missing/broken features as we work \
+towards creating the next version of the API. If you find any bugs or think \
+something could be improved it would be invaluable for you to let us know \
+by creating a new issue here: 'https://github.com/Project-PMMA/PMMA/issues'.");
+        }
+
+        PMMA::Core::SavedDataManagerInstance->Save();
     });
 }
 

@@ -19,10 +19,10 @@ inline constexpr int MAX_TEXTURE_MIPS = 13; // Compressed, 12 mips, RGBA for gen
 inline constexpr int MAX_FRAMES_BETWEEN_STALE_BUFFER_CLEANUP = 60; // 1 second at 60fps
 
 struct Logging_Types {
-    static inline constexpr std::string_view DEBUG = "[Debug]";
-    static inline constexpr std::string_view INFO = "[Info]";
-    static inline constexpr std::string_view WARN = "[Warn]";
-    static inline constexpr std::string_view ERROR = "[Error]";
+    static inline constexpr std::string_view LOG_DEBUG = "[Debug]";
+    static inline constexpr std::string_view LOG_INFO = "[Info]";
+    static inline constexpr std::string_view LOG_WARN = "[Warn]";
+    static inline constexpr std::string_view LOG_ERROR = "[Error]";
 };
 
 struct ANSI_Escape_Codes {

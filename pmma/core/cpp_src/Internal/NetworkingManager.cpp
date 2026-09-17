@@ -1,4 +1,8 @@
+#include <iostream>
+#include <string>
+
 #include <JSON/json.hpp>
+#include <cpr/cpr.h>
 
 #include "Internal/Core/PMMA_Core.hpp"
 #include "Internal/Core/PMMA_Registry.hpp"
@@ -61,44 +65,40 @@ to is a third party server (GitHub) and PMMA has no control over what data GitHu
         PMMA::Core::Registry::Latest_PMMA_Version.Version =
             std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
 
-        if (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[0] > PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[0]) {
-            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
-                77,
-                "A new major version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
-You are currently using version: " +
-                    PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
+        const auto now =
+            std::chrono::system_clock::now();
 
-        } else if (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[1] > PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[1]) {
-            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
-                78,
-                "A new minor version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
-You are currently using version: " +
-                    PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
-        } else if (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[2] > PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[2]) {
-            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
-                79,
-                "A new bug fixed version of PMMA is available: " + PMMA::Core::Registry::Latest_PMMA_Version.Version + ". \
-You are currently using version: " +
-                    PMMA::Core::Registry::Current_PMMA_Version.Version + ".");
-        } else {
-            PMMA::Core::LoggingManagerInstance->InternalLogInfo(
-                17,
-                "You are on the latest version of PMMA!");
-        }
+        const auto checkAgain =
+            now + std::chrono::hours(24 * 7);
 
-        bool UnreleasedVersion = ((PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[0] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[0]) ||
-                                  (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[1] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[1]) ||
-                                  (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[2] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[2]));
+        const std::time_t checkAgainTime =
+            std::chrono::system_clock::to_time_t(
+                checkAgain);
 
-        if (UnreleasedVersion) {
-            PMMA::Core::LoggingManagerInstance->InternalLogDebug(
-                22,
-                "Thank you for using a pre-released version of PMMA! Please \
-note that there will likely be issues or missing/broken features as we work \
-towards creating the next version of the API. If you find any bugs or think \
-something could be improved it would be invaluable for you to let us know \
-by creating a new issue here: 'https://github.com/Project-PMMA/PMMA/issues'.");
-        }
+        std::tm checkAgainTm{};
+
+#ifdef _WIN32
+
+        localtime_s(
+            &checkAgainTm,
+            &checkAgainTime);
+
+#else
+
+        localtime_r(
+            &checkAgainTime,
+            &checkAgainTm);
+
+#endif
+
+        std::ostringstream date;
+
+        date << std::put_time(
+            &checkAgainTm,
+            "%Y-%m-%d");
+
+        PMMA::Core::Registry::UpdateCheckTime =
+            date.str();
 
         return;
     } catch (const nlohmann::json::exception &e) {

@@ -22,6 +22,7 @@ extern std::string PathSeparator;
 extern PMMA::Internal::VersionData Current_PMMA_Version;
 extern PMMA::Internal::VersionData Latest_PMMA_Version;
 extern std::string Locale;
+extern std::string UpdateCheckTime;
 
 extern std::mutex SeedGeneratorLock;
 extern std::mt19937 RandomSeedGenerator;

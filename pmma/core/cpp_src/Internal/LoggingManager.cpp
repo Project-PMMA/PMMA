@@ -113,11 +113,11 @@ void PMMA::Internal::LoggingManager::Log(std::string_view Type, std::string Time
         std::string formattedContent;
 
         if (PMMA::Core::Registry::TerminalSupportsColor) {
-            if (Type == PMMA::Constants::Logging_Types::INFO) {
+            if (Type == PMMA::Constants::Logging_Types::LOG_INFO) {
                 formattedContent = "PMMA - " + std::string(PMMA::Constants::ANSI_Escape_Codes::GREEN) + std::string(Type) + std::string(PMMA::Constants::ANSI_Escape_Codes::RESET) + " - " + Timestamp + " - " + Content;
-            } else if (Type == PMMA::Constants::Logging_Types::WARN) {
+            } else if (Type == PMMA::Constants::Logging_Types::LOG_WARN) {
                 formattedContent = "PMMA - " + std::string(PMMA::Constants::ANSI_Escape_Codes::YELLOW) + std::string(Type) + std::string(PMMA::Constants::ANSI_Escape_Codes::RESET) + " - " + Timestamp + " - " + Content;
-            } else if (Type == PMMA::Constants::Logging_Types::ERROR) {
+            } else if (Type == PMMA::Constants::Logging_Types::LOG_ERROR) {
                 formattedContent = "PMMA - " + std::string(PMMA::Constants::ANSI_Escape_Codes::RED) + std::string(Type) + std::string(PMMA::Constants::ANSI_Escape_Codes::RESET) + " - " + Timestamp + " - " + Content;
             } else {
                 formattedContent = "PMMA - " + std::string(Type) + " - " + Timestamp + " - " + Content; // debug has no color
@@ -155,11 +155,11 @@ void PMMA::Internal::LoggingManager::Log(std::string Name, std::string_view Type
         std::string formattedContent;
 
         if (PMMA::Core::Registry::TerminalSupportsColor) {
-            if (Type == PMMA::Constants::Logging_Types::INFO) {
+            if (Type == PMMA::Constants::Logging_Types::LOG_INFO) {
                 formattedContent = Name + " - " + std::string(PMMA::Constants::ANSI_Escape_Codes::GREEN) + std::string(Type) + std::string(PMMA::Constants::ANSI_Escape_Codes::RESET) + " - " + Timestamp + " - " + Content;
-            } else if (Type == PMMA::Constants::Logging_Types::WARN) {
+            } else if (Type == PMMA::Constants::Logging_Types::LOG_WARN) {
                 formattedContent = Name + " - " + std::string(PMMA::Constants::ANSI_Escape_Codes::YELLOW) + std::string(Type) + std::string(PMMA::Constants::ANSI_Escape_Codes::RESET) + " - " + Timestamp + " - " + Content;
-            } else if (Type == PMMA::Constants::Logging_Types::ERROR) {
+            } else if (Type == PMMA::Constants::Logging_Types::LOG_ERROR) {
                 formattedContent = Name + " - " + std::string(PMMA::Constants::ANSI_Escape_Codes::RED) + std::string(Type) + std::string(PMMA::Constants::ANSI_Escape_Codes::RESET) + " - " + Timestamp + " - " + Content;
             } else {
                 formattedContent = Name + " - " + std::string(Type) + " - " + Timestamp + " - " + Content; // debug has no color
@@ -237,12 +237,12 @@ bool PMMA::Internal::LoggingManager::InternalLogDebug(int ID, std::string Conten
             if (PreviousIndex == PreviouslyLoggedContent.end()) {
                 PreviouslyLoggedContent.push_back(ID);
                 std::string DateTimeCode = GetDateTimeCode();
-                Log(PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+                Log(PMMA::Constants::Logging_Types::LOG_DEBUG, DateTimeCode, Content);
                 return true;
             }
         } else {
             std::string DateTimeCode = GetDateTimeCode();
-            Log(PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+            Log(PMMA::Constants::Logging_Types::LOG_DEBUG, DateTimeCode, Content);
             return true;
         }
     }
@@ -278,7 +278,7 @@ bool PMMA::Internal::LoggingManager::ExternalLogDebug(std::string ID, std::strin
                 if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
                     ProductName = PMMA::Core::PassportInstance->ProductName + " ";
                 }
-                Log(ProductName, PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+                Log(ProductName, PMMA::Constants::Logging_Types::LOG_DEBUG, DateTimeCode, Content);
                 return true;
             }
         } else {
@@ -286,7 +286,7 @@ bool PMMA::Internal::LoggingManager::ExternalLogDebug(std::string ID, std::strin
             if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
                 ProductName = PMMA::Core::PassportInstance->ProductName + " ";
             }
-            Log(ProductName, PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+            Log(ProductName, PMMA::Constants::Logging_Types::LOG_DEBUG, DateTimeCode, Content);
             return true;
         }
     }
@@ -321,14 +321,14 @@ void PMMA::Internal::LoggingManager::ExternalLogInfo(std::string ID, std::string
             if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
                 ProductName = PMMA::Core::PassportInstance->ProductName + " ";
             }
-            Log(ProductName, PMMA::Constants::Logging_Types::INFO, DateTimeCode, Content);
+            Log(ProductName, PMMA::Constants::Logging_Types::LOG_INFO, DateTimeCode, Content);
         }
     } else {
         std::string DateTimeCode = GetDateTimeCode();
         if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
             ProductName = PMMA::Core::PassportInstance->ProductName + " ";
         }
-        Log(ProductName, PMMA::Constants::Logging_Types::INFO, DateTimeCode, Content);
+        Log(ProductName, PMMA::Constants::Logging_Types::LOG_INFO, DateTimeCode, Content);
     }
 }
 
@@ -359,14 +359,14 @@ void PMMA::Internal::LoggingManager::ExternalLogWarn(std::string ID, std::string
             if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
                 ProductName = PMMA::Core::PassportInstance->ProductName + " ";
             }
-            Log(ProductName, PMMA::Constants::Logging_Types::WARN, DateTimeCode, Content);
+            Log(ProductName, PMMA::Constants::Logging_Types::LOG_WARN, DateTimeCode, Content);
         }
     } else {
         std::string DateTimeCode = GetDateTimeCode();
         if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
             ProductName = PMMA::Core::PassportInstance->ProductName + " ";
         }
-        Log(ProductName, PMMA::Constants::Logging_Types::WARN, DateTimeCode, Content);
+        Log(ProductName, PMMA::Constants::Logging_Types::LOG_WARN, DateTimeCode, Content);
     }
 }
 
@@ -397,13 +397,13 @@ void PMMA::Internal::LoggingManager::ExternalLogError(std::string ID, std::strin
             if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
                 ProductName = PMMA::Core::PassportInstance->ProductName + " ";
             }
-            Log(ProductName, PMMA::Constants::Logging_Types::ERROR, DateTimeCode, Content);
+            Log(ProductName, PMMA::Constants::Logging_Types::LOG_ERROR, DateTimeCode, Content);
         }
     } else {
         std::string DateTimeCode = GetDateTimeCode();
         if (ProductName == "" && PMMA::Core::PassportInstance->IsRegistered) {
             ProductName = PMMA::Core::PassportInstance->ProductName + " ";
         }
-        Log(ProductName, PMMA::Constants::Logging_Types::ERROR, DateTimeCode, Content);
+        Log(ProductName, PMMA::Constants::Logging_Types::LOG_ERROR, DateTimeCode, Content);
     }
 }

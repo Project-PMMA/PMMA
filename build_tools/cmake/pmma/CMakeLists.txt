@@ -46,6 +46,7 @@ set(CORE_SOURCES
     "${SRC_DIR}/Internal/SplashScreen.cpp"
     "${SRC_DIR}/Internal/NetworkingManager.cpp"
     "${SRC_DIR}/Internal/TerminalColorChecker.cpp"
+    "${SRC_DIR}/Internal/SavedDataManager.cpp"
 
     "${SRC_DIR}/Internal/Events/EventsManager.cpp"
     "${SRC_DIR}/Internal/Events/InternalEvents.cpp"

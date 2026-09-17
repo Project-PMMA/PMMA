@@ -21,6 +21,7 @@ class AnimationManager;
 class ParallelWorker;
 class PowerSavingManager;
 class NetworkingManager;
+class SavedDataManager;
 } // namespace PMMA::Internal
 
 namespace PMMA::Internal::Events {
@@ -62,4 +63,5 @@ extern PMMA::Internal::ParallelWorker *ParallelWorkerInstance;
 extern PMMA::Graphics::Shader *Core2D_ShapeSDF_Program;
 
 extern PMMA::Internal::NetworkingManager *NetworkingManagerInstance;
+extern PMMA::Internal::SavedDataManager *SavedDataManagerInstance;
 } // namespace PMMA::Core
