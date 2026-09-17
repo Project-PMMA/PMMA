@@ -7,16 +7,17 @@
 #include "Internal/NetworkingManager.hpp"
 
 void PMMA::Internal::NetworkingManager::QueryLatest_PMMA_Version() {
-    PMMA::Core::LoggingManagerInstance->InternalLogInfo(
-        74,
-        "Querying GitHub for the latest PMMA version...");
-
-    PMMA::Core::LoggingManagerInstance->InternalLogDebug(
-        75, "PMMA is connecting to the internet to check for new versions of PMMA. \
+    if (!PMMA::Core::LoggingManagerInstance->InternalLogDebug(
+            75, "PMMA is connecting to the internet to check for new versions of PMMA. \
 PMMA is not using this to phone home, collect any usage data or send any information \
 about you or your computer to any third party. You are welcome to check the source \
 code of PMMA to verify this if you wish. Note however, the server PMMA is connecting \
-to is a third party server (GitHub) and PMMA has no control over what data GitHub collects.");
+to is a third party server (GitHub) and PMMA has no control over what data GitHub collects.")) {
+
+        PMMA::Core::LoggingManagerInstance->InternalLogInfo(
+            74,
+            "Querying GitHub for the latest PMMA version...");
+    }
 
     std::string URL;
 
@@ -33,8 +34,9 @@ to is a third party server (GitHub) and PMMA has no control over what data GitHu
             {"Accept", "application/vnd.github+json"}});
 
     if (r.status_code != 200) {
-        std::cerr << "GitHub request failed: "
-                  << r.status_code << '\n';
+        PMMA::Core::LoggingManagerInstance->InternalLogWarn(
+            76,
+            "PMMA was unable to check for the latest version of PMMA on GitHub. Error code: " + std::to_string(r.status_code));
         return;
     }
 
@@ -84,10 +86,26 @@ You are currently using version: " +
                 "You are on the latest version of PMMA!");
         }
 
+        bool UnreleasedVersion = ((PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[0] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[0]) ||
+                                  (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[1] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[1]) ||
+                                  (PMMA::Core::Registry::Latest_PMMA_Version.VersionCodes[2] < PMMA::Core::Registry::Current_PMMA_Version.VersionCodes[2]));
+
+        if (UnreleasedVersion) {
+            PMMA::Core::LoggingManagerInstance->InternalLogDebug(
+                22,
+                "Thank you for using a pre-released version of PMMA! Please \
+note that there will likely be issues or missing/broken features as we work \
+towards creating the next version of the API. If you find any bugs or think \
+something could be improved it would be invaluable for you to let us know \
+by creating a new issue here: 'https://github.com/Project-PMMA/PMMA/issues'.");
+        }
+
         return;
     } catch (const nlohmann::json::exception &e) {
-        std::cerr << "Failed to parse GitHub response: "
-                  << e.what() << '\n';
+        PMMA::Core::LoggingManagerInstance->InternalLogWarn(
+            80,
+            "PMMA was unable to understand the new version data from the server." + std::string(e.what()));
+
         return;
     }
 }

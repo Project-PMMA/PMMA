@@ -86,3 +86,4 @@ Notes:
 77 - A new major version of PMMA is available
 78 - A new minor version of PMMA is available
 79 - A new bug fixed version of PMMA is available
+80 - Unable to parse new version data from server

@@ -328,13 +328,18 @@ correctly. If the problem persists, please report this issue on our GitHub page.
     int MinimumOperatingSystemApprovedWidth, MinimumOperatingSystemApprovedHeight;
     glfwGetWindowSize(TemporaryWindow, &MinimumOperatingSystemApprovedWidth, &MinimumOperatingSystemApprovedHeight);
 
-    PMMA::Core::LoggingManagerInstance->InternalLogDebug(
-        63,
-        "Your Operating System has a minimum approved window size of " +
-            std::to_string(MinimumOperatingSystemApprovedWidth) + "x" +
-            std::to_string(MinimumOperatingSystemApprovedHeight) +
-            ". If you attempt to create a window smaller than this, PMMA \
+    if (NewSize[0] < MinimumOperatingSystemApprovedWidth || NewSize[1] < MinimumOperatingSystemApprovedHeight) {
+        PMMA::Core::LoggingManagerInstance->InternalLogDebug(
+            63,
+            "Your Operating System has a minimum approved window size of " +
+                std::to_string(MinimumOperatingSystemApprovedWidth) + "x" +
+                std::to_string(MinimumOperatingSystemApprovedHeight) +
+                ". If you attempt to create a window smaller than this, PMMA \
 will automatically resize it to this minimum approved size.");
+
+        NewSize[0] = std::clamp(NewSize[0], static_cast<uint16_t>(MinimumOperatingSystemApprovedWidth), std::numeric_limits<uint16_t>::max());
+        NewSize[1] = std::clamp(NewSize[1], static_cast<uint16_t>(MinimumOperatingSystemApprovedHeight), std::numeric_limits<uint16_t>::max());
+    }
 
     int TemporaryWindow_X_Position, TemporaryWindow_Y_Position;
     glfwGetWindowPos(
@@ -459,7 +464,7 @@ correctly. If the problem persists, please report this issue on our GitHub page.
 is now set as the master display. All other displays created after this \
 will be considered secondary displays. Note: You cannot change the master \
 display once it is set, closing the master display will close all other \
-displays");
+displays.");
 
         bgfx::PlatformData pd{};
         pd.ndt = nullptr;
@@ -740,14 +745,14 @@ You can do this using `Display.create`.");
     unsigned int MaxRefreshRate;
 
     if (IsSecondaryDisplay) {
-        glfwPollEvents();
-    } else {
         PMMA::Core::LoggingManagerInstance->InternalLogDebug(
             62,
             "Always ensure that the master display is refreshed last as \
 this controls both frame timing and events. Also, refreshing the master \
 display updates all secondary displays.");
 
+        glfwPollEvents();
+    } else {
         bgfx::frame();
 
         if (kwargs.LimitRefreshRate) {

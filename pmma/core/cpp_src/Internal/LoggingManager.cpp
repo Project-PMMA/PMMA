@@ -226,9 +226,9 @@ void PMMA::Internal::LoggingManager::SetLogFileLocation(std::string NewLogFileLo
     FileCatchUp();
 }
 
-void PMMA::Internal::LoggingManager::InternalLogDebug(int ID, std::string Content, bool RepeatForEffect) {
+bool PMMA::Internal::LoggingManager::InternalLogDebug(int ID, std::string Content, bool RepeatForEffect) {
     if (!LogDebug) {
-        return;
+        return false;
     }
 
     if (PMMA::Core::Registry::IsDebuggingModeEnabled) {
@@ -238,17 +238,21 @@ void PMMA::Internal::LoggingManager::InternalLogDebug(int ID, std::string Conten
                 PreviouslyLoggedContent.push_back(ID);
                 std::string DateTimeCode = GetDateTimeCode();
                 Log(PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+                return true;
             }
         } else {
             std::string DateTimeCode = GetDateTimeCode();
             Log(PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+            return true;
         }
     }
+
+    return false;
 }
 
-void PMMA::Internal::LoggingManager::ExternalLogDebug(std::string ID, std::string Content, std::string ProductName, bool RepeatForEffect) {
+bool PMMA::Internal::LoggingManager::ExternalLogDebug(std::string ID, std::string Content, std::string ProductName, bool RepeatForEffect) {
     if (!LogDebug) {
-        return;
+        return false;
     }
 
     if (PMMA::Core::Registry::IsDebuggingModeEnabled) {
@@ -275,6 +279,7 @@ void PMMA::Internal::LoggingManager::ExternalLogDebug(std::string ID, std::strin
                     ProductName = PMMA::Core::PassportInstance->ProductName + " ";
                 }
                 Log(ProductName, PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+                return true;
             }
         } else {
             std::string DateTimeCode = GetDateTimeCode();
@@ -282,8 +287,11 @@ void PMMA::Internal::LoggingManager::ExternalLogDebug(std::string ID, std::strin
                 ProductName = PMMA::Core::PassportInstance->ProductName + " ";
             }
             Log(ProductName, PMMA::Constants::Logging_Types::DEBUG, DateTimeCode, Content);
+            return true;
         }
     }
+
+    return false;
 }
 
 void PMMA::Internal::LoggingManager::ExternalLogInfo(std::string ID, std::string Content, std::string ProductName, bool RepeatForEffect) {

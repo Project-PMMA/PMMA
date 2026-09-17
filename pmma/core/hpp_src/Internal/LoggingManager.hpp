@@ -167,7 +167,7 @@ public:
         return LogError;
     }
 
-    void InternalLogDebug(int ID, std::string Content, bool RepeatForEffect = false);
+    bool InternalLogDebug(int ID, std::string Content, bool RepeatForEffect = false);
 
     inline void InternalLogInfo(int ID, std::string Content, bool RepeatForEffect = false) {
         if (!LogInfo) {
@@ -223,7 +223,7 @@ public:
         }
     }
 
-    void ExternalLogDebug(std::string ID, std::string Content, std::string ProductName, bool RepeatForEffect = false);
+    bool ExternalLogDebug(std::string ID, std::string Content, std::string ProductName, bool RepeatForEffect = false);
 
     void ExternalLogInfo(std::string ID, std::string Content, std::string ProductName, bool RepeatForEffect = false);
 
