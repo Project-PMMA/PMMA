@@ -75,23 +75,30 @@ public:
         if (bgfx::isValid(vbh)) {
             bgfx::destroy(vbh);
         }
-
         if (bgfx::isValid(ibh)) {
             bgfx::destroy(ibh);
         }
-
         if (bgfx::isValid(s_colorTex)) {
             bgfx::destroy(s_colorTex);
         }
-
         if (bgfx::isValid(u_textureInfo)) {
             bgfx::destroy(u_textureInfo);
         }
-
         if (bgfx::isValid(OrthDisplayProj)) {
             bgfx::destroy(OrthDisplayProj);
         }
-    };
+
+        if (bgfx::isValid(OpaqueInstanceVbh)) {
+            bgfx::destroy(OpaqueInstanceVbh);
+        }
+        if (bgfx::isValid(TransparentInstanceVbh)) {
+            bgfx::destroy(TransparentInstanceVbh);
+        }
+
+        if (bgfx::isValid(u_FragmentData)) {
+            bgfx::destroy(u_FragmentData);
+        }
+    }
 
     void AdvanceView();
 

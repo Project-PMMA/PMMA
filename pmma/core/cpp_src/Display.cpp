@@ -949,8 +949,10 @@ PMMA::Display::~Display() {
 
         delete PMMA::Core::Core2D_ShapeSDF_Program;
 
-        glfwTerminate();
         bgfx::shutdown();
+        glfwDestroyWindow(Window);
+        Window = nullptr;
+        glfwTerminate();
     }
 
     glfwDestroyWindow(Window);

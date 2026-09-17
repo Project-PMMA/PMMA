@@ -12,49 +12,49 @@
 #include <bgfx/platform.h>
 
 namespace PMMA::Graphics {
-	class Shader {
-	private:
-		std::future<void> CompileShaderFuture;
+class Shader {
+private:
+    std::future<void> CompileShaderFuture;
 
-		std::string RawVertexShaderPath = "";
-		std::string RawFragmentShaderPath = "";
-		std::string CompiledVertexShaderPath = "";
-		std::string CompiledFragmentShaderPath = "";
+    std::string RawVertexShaderPath = "";
+    std::string RawFragmentShaderPath = "";
+    std::string CompiledVertexShaderPath = "";
+    std::string CompiledFragmentShaderPath = "";
 
-		bgfx::ProgramHandle ShaderProgram = BGFX_INVALID_HANDLE;
+    bgfx::ProgramHandle ShaderProgram = BGFX_INVALID_HANDLE;
 
-		bool IsCompiled = false;
-		bool IsInternalShader = false;
+    bool IsCompiled = false;
+    bool IsInternalShader = false;
 
-		void CompileShader(bool InternalShader);
+    void CompileShader(bool InternalShader);
 
-		void CompileShaderComponent(std::string RawFilePath, std::string CompiledFilePath, std::string Type);
+    void CompileShaderComponent(std::string RawFilePath, std::string CompiledFilePath, std::string Type);
 
-		std::string GetGraphicsProfile();
+    std::string GetGraphicsProfile();
 
-	public:
-		~Shader() {
-			if (CompileShaderFuture.valid()) {
-				CompileShaderFuture.wait();
+public:
+    ~Shader() {
+        if (CompileShaderFuture.valid()) {
+            CompileShaderFuture.wait();
 
-				CompileShaderFuture = std::future<void>();
-			}
+            CompileShaderFuture = std::future<void>();
+        }
 
-			if (bgfx::isValid(ShaderProgram)) {
-				bgfx::destroy(ShaderProgram);
-			}
-		}
+        if (bgfx::isValid(ShaderProgram)) {
+            bgfx::destroy(ShaderProgram);
+        }
+    }
 
-		void CreateShader();
+    void CreateShader();
 
-		void LoadShader(std::string VertexShaderPath, std::string FragmentShaderPath, bool InternalShader);
+    void LoadShader(std::string VertexShaderPath, std::string FragmentShaderPath, bool InternalShader);
 
-		void LoadVertexShader(std::string VertexShaderPath, bool InternalShader);
+    void LoadVertexShader(std::string VertexShaderPath, bool InternalShader);
 
-		void LoadFragmentShader(std::string FragmentShaderPath, bool InternalShader);
+    void LoadFragmentShader(std::string FragmentShaderPath, bool InternalShader);
 
-		void LoadShaderFromFolder(std::string FolderPath, bool InternalShader);
+    void LoadShaderFromFolder(std::string FolderPath, bool InternalShader);
 
-		bgfx::ProgramHandle Use();
-	};
+    bgfx::ProgramHandle Use();
+};
 } // namespace PMMA::Graphics
