@@ -201,8 +201,8 @@ pmma/extern/include/*
 !pmma/extern/include/STB/
 !pmma/extern/include/STB/**
 
-!pmma/extern/include/JSON/
-!pmma/extern/include/JSON/**
+!pmma/extern/include/nlohmann/
+!pmma/extern/include/nlohmann/**
 
 # ignore build
 build/*

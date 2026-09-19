@@ -75,7 +75,7 @@ def selectively_clean_extern():
     if os.path.exists(extern_dir):
         def should_keep(path):
             return ('STB' in path or
-                    'shader_build_tools' in path or 'JSON' in path)
+                    'shader_build_tools' in path or 'nlohmann' in path)
 
         for dirpath, dirnames, filenames in os.walk(extern_dir, topdown=False):
             full_dirpath = os.path.abspath(dirpath)

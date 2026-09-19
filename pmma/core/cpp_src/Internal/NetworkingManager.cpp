@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-#include <JSON/json.hpp>
 #include <cpr/cpr.h>
+#include <nlohmann/json.hpp>
 
 #include "Internal/Core/PMMA_Core.hpp"
 #include "Internal/Core/PMMA_Registry.hpp"
