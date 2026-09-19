@@ -17,10 +17,12 @@ namespace PMMA {
 void Initialize(std::string location) {
     if (std::filesystem::exists(location)) {
         if (!std::filesystem::is_directory(location)) {
-            throw std::runtime_error("The provided PMMA location is not a directory.");
+            std::cerr << "The provided PMMA location is not a directory: " << location << std::endl;
+            throw std::runtime_error("The provided PMMA location is not a directory: " + location);
         }
     } else {
-        throw std::runtime_error("The provided PMMA location does not exist.");
+        std::cerr << "The provided PMMA location does not exist: " << location << std::endl;
+        throw std::runtime_error("The provided PMMA location does not exist: " + location);
     }
 
     PMMA::Internal::TerminalColorChecker TerminalColorCheckerInstance;
